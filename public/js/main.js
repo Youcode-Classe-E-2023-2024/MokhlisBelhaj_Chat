@@ -1,4 +1,5 @@
 let URLROOT= 'http://localhost/MokhlisBelhaj_chat/'
+// get user
 
 $(document).ready(function () {
     // Function to fetch user data using Ajax
@@ -29,7 +30,8 @@ $(document).ready(function () {
 
     // Function to display user data on the page
     function displayUserData(userData) {
-        var html = '<ul>';
+        var html ='';
+       
         $.each(userData, function (index, user) {
             html +=  `<button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
             <div class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
@@ -46,7 +48,12 @@ $(document).ready(function () {
 
         $('#users').html(html);
     }
+    function fetchUserDataEverySecond() {
+        fetchUserData(); // Fetch data immediately
+        setInterval(fetchUserData, 1000); // Fetch data every 1000 milliseconds (1 second)
+    }
+    // fetchUserDataEverySecond()
 
-    // Fetch user data on page load
-    fetchUserData();
+   
+    
 });

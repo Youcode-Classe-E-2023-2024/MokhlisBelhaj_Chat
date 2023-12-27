@@ -81,8 +81,11 @@ class User {
 
     public function getUser() {
         try {
-            $this->db->query("SELECT * FROM " . $this->tableName. "WHERE userId <> ".$_SESSION["userId"]);
+            $this->db->query("SELECT * FROM " . $this->tableName . " WHERE userId <> :userId");
+            $this->db->bind(':userId', $_SESSION["user_id"]);
+           
             $result = $this->db->resultSet();
+          
             return $result;
         } catch (Exception $e) {
             // Log or handle the exception appropriately
