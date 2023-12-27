@@ -2,27 +2,32 @@
 class Router
 {
     protected $currentController ;
-    protected $currentMethod='index' ;
+    protected $currentMethod;
     protected $params = [];
 
     public function __construct()
     {
         
         $urlData = $this->getUrl();
+   
+       
         
-        if ($urlData['controller']=='index.php' ) { 
-            $urlData['controller']  = 'dashboard';
+        if (empty($urlData)){
+            $urlData['controller']  = 'Home';
+            $urlData['method']  = 'index';
+            $urlData['params'] = [];
+
         } 
-     
+  
         
         
        
         
         
         
-        if (file_exists('controllers/' . ($urlData['controller']) . '.php')) {
+        if (file_exists('../app/controllers/' . ($urlData['controller']) . '.php')) {
             $currentController = $urlData['controller'];
-            require_once('controllers/' . $currentController . '.php');
+            require_once('../app/controllers/' . $currentController . '.php');
             
             $this->currentController = new $currentController;
             if(method_exists($this->currentController, $urlData['method'])){
