@@ -10,12 +10,18 @@ class Message extends Controller
     {
         $id = $_POST['roomId'];
        $res= $this->message->getMessages($id);
-       print_r(json_encode($res));
+       $data=[
+        'message'=>$res,
+        'user'=>$_SESSION['user_id']
+       ];
+       print_r(json_encode($data));
+      
+
     }
     public function sendMessage()
     {
         $data = [
-            'userid' => $_SESSION['userid'],
+            'userid' => $_SESSION['user_id'],
             'idroom' => $_POST['idroom'],
             'content' => $_POST['content'],
 

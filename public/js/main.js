@@ -63,23 +63,45 @@ $(document).ready(function () {
                                     console.error('Error:', error);
                                 }
                             });
-                          
                             chat.innerHTML = ""
-                            test.forEach(ele => {
+                            test.message.forEach(ele => {
                                 console.log(ele);
-                                chat.innerHTML += `
-                                    <div class="col-start-1 col-end-8 p-3 rounded-lg">
-                                        <div class="flex flex-row items-center">
-                                            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                                                ${ele.name.charAt(0)}
-                                            </div>
-                                            <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                                                <div>${ele.content}</div>
+                                
+                                // Assuming 'user' is the current user's ID
+                                var currentUserID = test.user;
+                            
+                                // Check if 'from_user' is equal to 'user'
+                                if (ele.from_user === currentUserID) {
+                                    // Display this HTML when 'from_user' is equal to 'user'
+                                    chat.innerHTML += `
+                                        <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                                            <div class="flex items-center justify-start flex-row-reverse">
+                                                <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                                    ${ele.name.charAt(0)}
+                                                </div>
+                                                <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+                                                    <div>${ele.content}</div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                `;
+                                    `;
+                                } else {
+                                    // Display this HTML when 'from_user' is not equal to 'user'
+                                    chat.innerHTML += `
+                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div class="flex flex-row items-center">
+                                                <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                                    ${ele.name.charAt(0)}
+                                                </div>
+                                                <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                                                    <div>${ele.content}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }
                             });
+                            
                         })
                    })
                 } else {
