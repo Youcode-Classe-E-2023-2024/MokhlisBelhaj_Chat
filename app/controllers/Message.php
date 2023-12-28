@@ -23,7 +23,7 @@ class Message extends Controller
         $data = [
             'userid' => $_SESSION['user_id'],
             'idroom' => $_POST['idroom'],
-            'content' => $_POST['content'],
+            'content' => $_POST['message'],
 
         ];
         $this->message->insertMessage($data);
