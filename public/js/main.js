@@ -32,14 +32,41 @@ $(document).ready(function () {
             url: URLROOT+'Rooms/getRoom', // Adjust the URL accordingly
             method: 'post',
             dataType: 'json',
-            success: function (data) {
+            success: async function (data) {
                 console.log(data);
                 // Handle the retrieved data
                 if (data && data.length > 0) {
                     $('#controom').html(data.length);
                     // Assuming the data is an array of user objects
                     
-                    displayRoomData(data);
+                   await displayRoomData(data);
+                    let roms = document.querySelectorAll(".roms")
+                    let chat = document.getElementById("chat");
+                    
+                    roms.forEach(rom => {
+                        rom.addEventListener("click", () => {
+                            let test = [
+                                {name : "oussama", message : "hello world"},
+                                {name : "moukhlis", message : "jesus"},
+                                {name : "test", message : "youcode"},
+                            ]
+                            chat.innerHTML = ""
+                            test.forEach(ele => {
+                                chat.innerHTML += `
+                                    <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                                        <div class="flex flex-row items-center">
+                                            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                                ${ele.name}
+                                            </div>
+                                            <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                                                <div>${ele.message}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `
+                            })
+                        })
+                   })
                 } else {
                     // Handle empty response or error
                     $('#users').html('No room data available.');
@@ -56,7 +83,7 @@ $(document).ready(function () {
         var html ='';
        
         $.each(RoomData, function (index, Room) {
-            html +=  `<button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+            html +=  `<button class="roms flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
             <div class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
             ${Room.name.charAt(0)}
             </div>
@@ -101,6 +128,7 @@ $(document).ready(function () {
    
     
 });
+
 
 // add room 
 $(document).ready(function () {

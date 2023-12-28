@@ -192,8 +192,8 @@
         <div class="flex flex-col flex-auto h-full p-6">
             <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
                 <div class="flex flex-col h-full overflow-x-auto mb-4">
-                    <div class="flex flex-col h-full">
-                        <div class="grid grid-cols-12 gap-y-2">
+                    <div  class="flex flex-col h-full">
+                        <div id="chat" class="grid grid-cols-12 gap-y-2">
                             <div class="col-start-1 col-end-8 p-3 rounded-lg">
                                 <div class="flex flex-row items-center">
                                     <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
