@@ -7,6 +7,16 @@ class Rooms extends Controller {
         $this->room_member = $this->model('RoomMember');
 
     }
+    public function getRoom(){
+        $id = $_SESSION['user_id'];
+        $res = $this->Room->getMyRoom($id);
+        if ($res) {
+            echo json_encode($res);
+        } else {
+            // Handle error or return an appropriate response
+            echo json_encode(['error' => 'Unable to fetch user data']);
+        }
+    }
     public function newRoom(){
         // print_r($_POST);
         // die();

@@ -27,7 +27,46 @@ $(document).ready(function () {
             }
         });
     }
+    function fetchRoomData() {
+        $.ajax({
+            url: URLROOT+'Rooms/getRoom', // Adjust the URL accordingly
+            method: 'post',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                // Handle the retrieved data
+                if (data && data.length > 0) {
+                    $('#controom').html(data.length);
+                    // Assuming the data is an array of user objects
+                    
+                    displayRoomData(data);
+                } else {
+                    // Handle empty response or error
+                    $('#users').html('No room data available.');
+                }
+            },
+            error: function () {
+                // Handle Ajax error
+                $('#users').html('Error fetching room data.');
+            }
+        });
+    }
+    // Function to display user data on the page
+    function displayRoomData(RoomData) {
+        var html ='';
+       
+        $.each(RoomData, function (index, Room) {
+            html +=  `<button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+            <div class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+            ${Room.name.charAt(0)}
+            </div>
+            <div class="ml-2 text-sm font-semibold"> ${Room.name}</div>
+        </button>`
+        });
+        html += '</ul>';
 
+        $('#Room').html(html);
+    }
     // Function to display user data on the page
     function displayUserData(userData) {
         var html ='';
@@ -48,11 +87,16 @@ $(document).ready(function () {
 
         $('#users').html(html);
     }
-    function fetchUserDataEverySecond() {
-        fetchUserData(); // Fetch data immediately
-        setInterval(fetchUserData, 1000); // Fetch data every 1000 milliseconds (1 second)
+    function fetchDataEverySecond() {
+        function run() {
+            fetchUserData();
+            fetchRoomData();
+        }
+        
+        setInterval(run, 1000); // Pass the reference to the function without invoking it
     }
-    fetchUserDataEverySecond()
+    fetchDataEverySecond();
+   
  
    
     
