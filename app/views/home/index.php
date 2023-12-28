@@ -234,7 +234,7 @@
         </div>
     </form>
     <div class="ml-4">
-        <button type="button" onclick="sendMessage()" class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
+        <button type="button"  id="sendMessageButton" class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
             <span>Send</span>
             <span class="ml-2">
                 <svg class="w-4 h-4 transform rotate-45 -mt-px" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

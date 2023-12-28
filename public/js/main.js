@@ -36,7 +36,7 @@ $(document).ready(function () {
     
             // AJAX request to send the message
             $.ajax({
-                url: 'http://localhost/MokhlisBelhaj_chat/message/sendMessage',
+                url: URLROOT+'/message/sendMessage',
                 type: 'POST',
                 data: { message: messageInput },
                 success: function(response) {
