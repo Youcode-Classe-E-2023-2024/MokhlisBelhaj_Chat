@@ -1,4 +1,5 @@
 let URLROOT= 'http://localhost/MokhlisBelhaj_chat/'
+
 // get user
 
 $(document).ready(function () {
@@ -9,7 +10,6 @@ $(document).ready(function () {
             method: 'post',
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 // Handle the retrieved data
                 if (data && data.length > 0) {
                     $('#cont').html(data.length);
@@ -52,8 +52,42 @@ $(document).ready(function () {
         fetchUserData(); // Fetch data immediately
         setInterval(fetchUserData, 1000); // Fetch data every 1000 milliseconds (1 second)
     }
-    // fetchUserDataEverySecond()
-
+    fetchUserDataEverySecond()
+ 
    
     
 });
+
+// add room 
+$(document).ready(function () {
+    $('#submitBtn').on('click', function () {
+        event.preventDefault();
+
+        // Collect form data
+        var formData = {
+            name: $('#name').val(),
+            selectedUsers: $('input[name="selected_users[]"]:checked').map(function () {
+                return this.value;
+            }).get()
+        };
+        console.log(formData);
+
+        // Send the data using AJAX
+        $.ajax({
+            type: 'POST',
+            url: URLROOT+'Rooms /newRoom', // Replace with your server-side script URL
+            data: formData,
+            success: function (response) {
+                // Handle the success response
+                console.log(response);
+            },
+            error: function (error) {
+                // Handle the error
+                console.error(error);
+            }
+        });
+    });
+});
+
+
+  

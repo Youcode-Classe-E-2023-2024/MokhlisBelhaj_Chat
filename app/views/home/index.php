@@ -25,21 +25,164 @@
                     <span id='cont' class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"></span>
                 </div>
                 <div id='users' class="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto">
-                    <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
-                        <div class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-                            H
-                        </div>
-                        <div class="ml-2 text-sm font-semibold">
-                            <span class='text-black'>
-                                Henry Boyd
-                            </span>
-                        </div>
-                    </button>
-                  
+                    <!-- user  -->
+
                 </div>
                 <div class="flex flex-row items-center justify-between text-xs mt-6">
-                    <span class="font-bold">group</span>
+                    <span class="font-bold">Room</span>
                     <span class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full">7</span>
+                  
+
+
+                    <!-- Modal toggle -->
+
+
+                    <!-- Modal toggle -->
+                    <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                        <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">New Room</span>
+                    </button>
+
+                    <!-- Main modal -->
+                    <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative p-4 w-full max-w-md max-h-full">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <!-- Modal header -->
+                                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                        Create New Room
+                                    </h3>
+                                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                <!-- Modal body -->
+                                <form id="roomForm" class="p-4 md:p-5">
+                                    <div class="grid gap-4 mb-4 grid-cols-2">
+                                        <div class="col-span-2">
+                                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                                        </div>
+                                        <div class="col-span-2 ">
+                                            <label for="searchInput" class="mb-3 block text-base font-medium text-[#07074D]">
+                                                users
+                                            </label>
+                                            <div class="flex">
+                                                <input type="text" id="searchInput" placeholder="Search" class=" w-full h-14 rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                                <button type="button" onclick="toggleDropdown()">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" data-slot="icon" class="w-6 h-6">
+                                                        <path id="downArrow" class="downUser" stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                        <path id="upArrow" class="downUser" hidden stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                                    </svg>
+
+
+
+                                                </button>
+                                            </div>
+                                            <div class="absolute max-h-40 w-full z-10 mt-2 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto hidden " id="dropdownContent">
+                                            <label><input class="chekk" type="checkbox" name="selected_users[]" multiple value="<?php echo $_SESSION['user_id']; ?>" class="mr-2" checked disabled hidden></label>
+                                                <?php
+                                                if (!empty($data['users'])) {
+                                                    foreach ($data['users'] as $user) {
+                                                ?>
+                                                        <div class="p-2">
+                                                            <label><input class="chekk" type="checkbox" name="selected_users[]" multiple value="<?php echo $user->userId; ?>" class="mr-2"><?php echo $user->email;; ?></label>
+                                                        </div>
+                                                <?php
+                                                    }
+                                                } else {
+                                                    echo "utilisateurs indisponibles";
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <!-- js multiselect -->
+                                        
+                        <script>
+                            const searchInput = document.getElementById('searchInput');
+                            const dropdownContent = document.getElementById('dropdownContent');
+                            const userCheckboxes = document.querySelectorAll('input[name="selected_users[]"]');
+                            // const checkboxes = document.querySelectorAll('chekk');
+                            console.log(userCheckboxes);
+
+
+                            var downArrow = document.getElementById('downArrow');
+                            var upArrow = document.getElementById('upArrow');
+
+
+                            searchInput.addEventListener('input', function() {
+                                filterOptions();
+                                if (searchInput.value.trim() !== '') {
+                                    showUserDropdown()
+                                }
+                            });
+
+                            userCheckboxes.forEach(checkbox => {
+                                checkbox.addEventListener('change', updateSelection);
+                            });
+
+                            function filterOptions() {
+                                const searchTerm = searchInput.value.toLowerCase();
+
+                                Array.from(dropdownContent.children).forEach(option => {
+                                    const optionText = option.textContent.toLowerCase();
+                                    option.style.display = optionText.includes(searchTerm) ? 'block' : 'none';
+                                });
+                            }
+
+                            function updateSelection() {
+                                const selectedOptions = Array.from(userCheckboxes)
+                                    .filter(checkbox => checkbox.checked)
+                                    .map(checkbox => checkbox.value);
+
+
+                                console.log('Selected Options:', selectedOptions);
+                            }
+
+                            function toggleDropdown() {
+                                var dropdown = document.getElementById('dropdownContent');
+                                dropdown.classList.toggle('hidden');
+                                downArrow.toggleAttribute('hidden');
+                                upArrow.toggleAttribute('hidden');
+
+                            }
+
+                            function toggle() {
+                                var dropdown = document.getElementById('dropdown');
+                                dropdown.classList.toggle('hidden');
+                            }
+
+                            function showUserDropdown() {
+                                var Dropdown = document.getElementById('dropdownContent');
+                                Dropdown.classList.remove('hidden');
+                                upArrow.removeAttribute('hidden');
+                                downArrow.setAttribute('hidden', 'true');
+                            }
+                        </script>
+                                        <!-- end -->
+
+
+
+                                    </div>
+                                    <button type="button" id="submitBtn" class=" text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Add Room
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!-- end modal -->
                 </div>
                 <div class="flex flex-col space-y-1 mt-4 -mx-2">
                     <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
@@ -140,7 +283,7 @@
                                     </div>
                                 </div>
                             </div>
-                         
+
                         </div>
                     </div>
                 </div>
@@ -177,5 +320,6 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="<?php echo URLROOT;?>/public/js/main.js"></script>
+<script src="<?php echo URLROOT; ?>/public/js/main.js"></script>

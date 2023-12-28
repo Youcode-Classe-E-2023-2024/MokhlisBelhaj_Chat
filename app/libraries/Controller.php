@@ -1,8 +1,7 @@
 <?php
 class Controller{
     public function model($model){
-      // echo$model;
-      // die();
+     
        
         require_once '../app/models/' . $model . '.php';
   
