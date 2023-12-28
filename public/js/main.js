@@ -6,7 +6,7 @@ $(document).ready(function () {
     // Function to fetch user data using Ajax
     function fetchUserData() {
         $.ajax({
-            url: URLROOT + 'Users/getUser', // Adjust the URL accordingly
+            url: URLROOT + 'Users/getUser', 
             method: 'post',
             dataType: 'json',
             success: function (data) {
@@ -27,113 +27,110 @@ $(document).ready(function () {
             }
         });
     }
-    $(document).ready(function() {
-        $('#messageForm').submit(function(event) {
-            event.preventDefault();
-    
-            // Get the message input value
-            var messageInput = $('[name="messageInput"]').val();
-    
-            // AJAX request to send the message
-            $.ajax({
-                url: URLROOT+'/message/sendMessage',
-                type: 'POST',
-                data: { message: messageInput },
-                success: function(response) {
-                    console.log('Message sent successfully:', response);
-                    // Add your logic for handling a successful response
-                },
-                error: function(error) {
-                    console.error('Error sending message:', error);
-                    // Add your logic for handling errors
-                }
-            });
-        });
-    
-        // Alternatively, you can bind the click event to the button
-        $('#sendMessageButton').click(function() {
-            $('#messageForm').submit();
-        });
-    });
+ 
     function fetchRoomData() {
         $.ajax({
-            url: URLROOT + 'Rooms/getRoom', // Adjust the URL accordingly
+            url: URLROOT + 'Rooms/getRoom',
             method: 'post',
             dataType: 'json',
             success: async function (data) {
                 console.log(data);
-                // Handle the retrieved data
+    
                 if (data && data.length > 0) {
                     $('#controom').html(data.length);
-                    // Assuming the data is an array of user objects
-
                     displayRoomData(data);
-                    let roms = document.querySelectorAll(".roms")
+    
+                    let roms = document.querySelectorAll(".roms");
                     let chat = document.getElementById("chat");
-
-
+    
                     roms.forEach(rom => {
                         rom.addEventListener("click", () => {
-                            let roomId = rom.getElementsByClassName("id")[0].value;;
-                            
-                            // Make an AJAX POST request using jQuery
+                            let roomId = rom.getElementsByClassName("id")[0].value;
+    
+                            // Make an AJAX POST request to fetch messages for the room
                             $.ajax({
                                 url: 'http://localhost/MokhlisBelhaj_chat/message/messageRoom',
                                 type: 'POST',
                                 data: { roomId: roomId },
                                 success: function (response) {
-                                    test = JSON.parse(response)
-                                    console.log(test)
+                                    let test = JSON.parse(response);
+                                    console.log(test);
+    
                                     // Handle the success response here
-
+    
+                                    chat.innerHTML = "";
+                                    test.message.forEach(ele => {
+                                        console.log(ele);
+    
+                                        // Assuming 'user' is the current user's ID
+                                        var currentUserID = test.user;
+    
+                                        if (ele.from_user === currentUserID) {
+                                            chat.innerHTML += `
+                                                <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                                                    <div class="flex items-center justify-start flex-row-reverse">
+                                                        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                                            ${ele.name.charAt(0)}
+                                                        </div>
+                                                        <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+                                                            <div>${ele.content}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        } else {
+                                            chat.innerHTML += `
+                                                <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                                                    <div class="flex flex-row items-center">
+                                                        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                                            ${ele.name.charAt(0)}
+                                                        </div>
+                                                        <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                                                            <div>${ele.content}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }
+                                    });
+    
+                                    // Message sending logic
+                                    $(document).ready(function () {
+                                        $('#messageForm').submit(function (event) {
+                                            event.preventDefault();
+    
+                                            // Get the message input value
+                                            var messageInput = $('[name="messageInput"]').val();
+    
+                                            // AJAX request to send the message along with idroom
+                                            $.ajax({
+                                                url: 'http://localhost/MokhlisBelhaj_chat/message/sendMessage',
+                                                type: 'POST',
+                                                data: { message: messageInput, idroom: roomId },
+                                                success: function (response) {
+                                                    console.log('Message sent successfully:', response);
+                                                    // Add your logic for handling a successful response
+                                                },
+                                                error: function (error) {
+                                                    console.error('Error sending message:', error);
+                                                    // Add your logic for handling errors
+                                                }
+                                            });
+                                        });
+    
+                                        // Alternatively, you can bind the click event to the button
+                                        $('#sendMessageButton').click(function () {
+                                            $('#messageForm').submit();
+                                        });
+                                    });
                                 },
                                 error: function (error) {
                                     // Handle errors here
                                     console.error('Error:', error);
                                 }
                             });
-                            
-                            chat.innerHTML = ""
-                            test.message.forEach(ele => {
-                                console.log(ele);
-
-                                // Assuming 'user' is the current user's ID
-                                var currentUserID = test.user;
-
-                                // Check if 'from_user' is equal to 'user'
-                                if (ele.from_user === currentUserID) {
-                                    // Display this HTML when 'from_user' is equal to 'user'
-                                    chat.innerHTML += `
-                                        <div class="col-start-6 col-end-13 p-3 rounded-lg">
-                                            <div class="flex items-center justify-start flex-row-reverse">
-                                                <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                                                    ${ele.name.charAt(0)}
-                                                </div>
-                                                <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                                                    <div>${ele.content}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
-                                } else {
-                                    // Display this HTML when 'from_user' is not equal to 'user'
-                                    chat.innerHTML += `
-                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
-                                            <div class="flex flex-row items-center">
-                                                <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                                                    ${ele.name.charAt(0)}
-                                                </div>
-                                                <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                                                    <div>${ele.content}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
-                                }
-                            });
-                           
-                        })
-                    })
+                        });
+                    });
                 } else {
                     // Handle empty response or error
                     $('#users').html('No room data available.');
@@ -253,7 +250,7 @@ $(document).ready(function () {
         // Send the data using AJAX
         $.ajax({
             type: 'POST',
-            url: URLROOT + 'Rooms/newRoom', // Replace with your server-side script URL
+            url: URLROOT + 'Rooms/newRoom', 
             data: formData,
             success: function (response) {
                 // Handle the success response
