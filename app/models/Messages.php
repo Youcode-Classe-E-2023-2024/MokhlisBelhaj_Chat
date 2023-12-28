@@ -9,9 +9,22 @@ class Messages {
     }
     public function getMessages($id){
         try {
-            $this->db->query("SELECT `idmessage`, `idroom`, `from_user`, `content`, `timestamp` FROM `message` WHERE idroom=:idroom
-
-            " );
+            $this->db->query("SELECT 
+            user.name,
+            message.idmessage,
+            message.idroom,
+            message.from_user,
+            message.content,
+            message.timestamp
+        FROM 
+            message
+        JOIN 
+            user ON message.from_user = user.userId
+        WHERE 
+            message.idroom = :idroom
+        ORDER BY 
+            message.timestamp DESC; 
+        " );
             $this->db->bind(':idroom', $id);
            
             $result = $this->db->resultSet();

@@ -8,7 +8,7 @@ class Message extends Controller
     }
     public function messageRoom()
     {
-        $id = 1;
+        $id = $_POST['roomId'];
        $res= $this->message->getMessages($id);
        print_r(json_encode($res));
     }

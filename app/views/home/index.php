@@ -147,12 +147,14 @@
                                 dropdown.classList.toggle('hidden');
                                 downArrow.toggleAttribute('hidden');
                                 upArrow.toggleAttribute('hidden');
+                               
 
                             }
 
                             function toggle() {
                                 var dropdown = document.getElementById('dropdown');
                                 dropdown.classList.toggle('hidden');
+                                
                             }
 
                             function showUserDropdown() {
